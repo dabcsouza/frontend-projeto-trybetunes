@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { FileEarmarkPerson, ArrowRightCircle } from 'react-bootstrap-icons';
+import { Redirect } from 'react-router';
 import { createUser } from '../services/userAPI';
+import Loading from './Loading';
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       buttonDisable: true,
+      loadingPage: false,
+      searchPage: false,
       userName: '',
     };
+    this.renderLogin = this.renderLogin.bind(this);
     this.handleForm = this.handleForm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -23,16 +28,20 @@ export default class Login extends Component {
     } else { this.setState({ buttonDisable: true }); }
   }
 
-  async handleSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
-    const { userName } = this.state;
-    const user = await createUser({
-      name: userName,
+    this.setState({ loadingPage: true }, async () => {
+      const { userName } = this.state;
+      await createUser({
+        name: userName,
+      });
+      this.setState({
+        searchPage: true,
+      });
     });
-    console.log(user);
   }
 
-  render() {
+  renderLogin() {
     const { buttonDisable } = this.state;
     return (
       <div data-testid="page-login">
@@ -67,6 +76,20 @@ export default class Login extends Component {
             </button>
           </div>
         </form>
+      </div>
+    );
+  }
+
+  render() {
+    const { loadingPage, searchPage } = this.state;
+    return (
+      <div>
+        {
+          loadingPage ? <Loading /> : this.renderLogin()
+        }
+        {
+          searchPage && <Redirect to="/search" />
+        }
       </div>
     );
   }
