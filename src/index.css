@@ -66,3 +66,42 @@ code {
   justify-content: center;
   width: 100%;
 }
+
+.links {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+}
+
+.links a {
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.507);
+  background-color: rgba(20, 179, 54, 0.555);
+  padding: 10px 12%;
+  margin: 20px 5px 0 0;
+}
+
+.links a:hover {
+  color: #fff;
+  text-decoration: none;
+  transform: scale(1.02);
+}
+
+.search-container {
+  display: flexbox;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+.search-container button {
+  width: 80px;
+}
+
+.search-container label {
+  width: 40%;
+}
+.search-container label input {
+  height: 50px;
+}
+
