@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { PersonBoundingBox } from 'react-bootstrap-icons';
 import { getUser } from '../services/userAPI';
 import Loading from '../pages/Loading';
 
@@ -26,6 +28,15 @@ export default class Header extends Component {
     });
   }
 
+  renderName(name) {
+    return (
+      <span className="user-box">
+        <PersonBoundingBox size={ 30 } />
+        {name}
+      </span>
+    );
+  }
+
   render() {
     const { showLoading, userName: { name } } = this.state;
     return (
@@ -33,14 +44,19 @@ export default class Header extends Component {
         data-testid="header-component"
         className="card-header headercell"
       >
-        <span
+        <section
           data-testid="header-user-name"
           className="user-header"
         >
           {
-            showLoading ? <Loading /> : <p>{ name }</p>
+            showLoading ? <Loading /> : this.renderName(name)
           }
-        </span>
+        </section>
+        <sections className="links">
+          <Link to="/search" data-testid="link-to-search">Pesquisar</Link>
+          <Link to="/favorites" data-testid="link-to-favorites">Favoritos</Link>
+          <Link to="/profile" data-testid="link-to-profile">Perfil</Link>
+        </sections>
       </header>
     );
   }
