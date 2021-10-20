@@ -52,11 +52,11 @@ export default class Header extends Component {
             showLoading ? <Loading /> : this.renderName(name)
           }
         </section>
-        <sections className="links">
+        <section className="links">
           <Link to="/search" data-testid="link-to-search">Pesquisar</Link>
           <Link to="/favorites" data-testid="link-to-favorites">Favoritos</Link>
           <Link to="/profile" data-testid="link-to-profile">Perfil</Link>
-        </sections>
+        </section>
       </header>
     );
   }
