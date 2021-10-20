@@ -154,3 +154,26 @@ code {
   outline: #4CAF50 solid 5px;
   width: 275px;
 }
+
+.card-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.music-playing {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  width: 500px;
+  height: 150px;
+  border: 1px solid rgba(0, 0, 0, 0.059);
+  border-radius: 8px;
+  text-align: center;
+  margin: 1px;
+}
+
+.music-playing p {
+  margin: auto;
+}
