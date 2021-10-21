@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
+import Loading from './Loading';
 
 export default class Album extends Component {
   constructor(props) {
@@ -11,61 +12,91 @@ export default class Album extends Component {
       musicsList: [],
       artistName: '',
       albumName: '',
+      loading: false,
+      checkboxActive: [],
     };
     this.getMusicsList = this.getMusicsList.bind(this);
+    this.handleLoading = this.handleLoading.bind(this);
+    this.handleCheckbox = this.handleCheckbox.bind(this);
   }
 
   componentDidMount() {
     this.getMusicsList();
   }
 
+  handleLoading(loading) {
+    this.setState({
+      loading,
+    });
+  }
+
+  handleCheckbox(index, value) {
+    const { checkboxActive } = this.state;
+    const changeList = [...checkboxActive];
+    changeList[index] = value;
+    this.setState({ checkboxActive: changeList });
+  }
+
   async getMusicsList() {
     const { match: { params: { id } } } = this.props;
     const musicsList = await getMusics(id);
+    const checkboxActive = musicsList.map(() => false);
     this.setState({
       musicsList,
       artistName: musicsList[0].artistName,
       albumName: musicsList[0].collectionName,
+      checkboxActive,
     });
   }
 
   render() {
-    const { musicsList, artistName, albumName } = this.state;
+    const { musicsList, artistName, albumName, loading, checkboxActive } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
-        <h3
-          data-testid="artist-name"
-          className="title-results"
-        >
-          { artistName }
-        </h3>
-        <div
-          data-testid="album-name"
-          className="card-board"
-        >
-          <section className="presentation-board">
-            <p>{ albumName }</p>
-            <p>{ artistName }</p>
-          </section>
-          <section className="audio-presentation-board">
-            {
-              musicsList.map((music, index) => {
-                if (index > 0) {
-                  return (
-                    <MusicCard
-                      key={ index }
-                      trackName={ music.trackName }
-                      previewUrl={ music.previewUrl }
-                    />
-                  );
-                }
-                return false;
-              })
-            }
-          </section>
-
-        </div>
+        {
+          loading ? <Loading /> : (
+            <div className="complete-album">
+              <h3
+                data-testid="artist-name"
+                className="title-results"
+              >
+                { artistName }
+              </h3>
+              <div
+                data-testid="album-name"
+                className="card-board"
+              >
+                <section className="presentation-board">
+                  <p>{ albumName }</p>
+                  <p>{ artistName }</p>
+                </section>
+                <section className="audio-presentation-board">
+                  {
+                    musicsList.map((music, index) => {
+                      if (index > 0) {
+                        return (
+                          <MusicCard
+                            key={ music.trackId }
+                            trackName={ music.trackName }
+                            previewUrl={ music.previewUrl }
+                            trackId={ music.trackId }
+                            musicObj={ musicsList[index] }
+                            handleLoading={ this.handleLoading }
+                            handleCheckbox={ this.handleCheckbox }
+                            index={ index }
+                            checked={ checkboxActive[index] }
+                          />
+                        );
+                      }
+                      return false;
+                    })
+                  }
+                </section>
+              </div>
+            </div>
+          )
+        }
       </div>
     );
   }
