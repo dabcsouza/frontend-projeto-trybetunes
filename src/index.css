@@ -178,3 +178,11 @@ code {
 .music-playing p {
   margin: auto;
 }
+
+.button-profile {
+  text-align: center;
+  width: 150px;
+  height: 40px;
+}
+
+
