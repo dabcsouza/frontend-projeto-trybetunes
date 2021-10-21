@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from './Loading';
+import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 export default class Album extends Component {
   constructor(props) {
@@ -18,13 +19,14 @@ export default class Album extends Component {
     this.getMusicsList = this.getMusicsList.bind(this);
     this.handleLoading = this.handleLoading.bind(this);
     this.handleCheckbox = this.handleCheckbox.bind(this);
+    this.getFavorites = this.getFavorites.bind(this);
   }
 
   componentDidMount() {
     this.getMusicsList();
   }
 
-  handleLoading(loading) {
+  async handleLoading(loading) {
     this.setState({
       loading,
     });
@@ -46,6 +48,24 @@ export default class Album extends Component {
       artistName: musicsList[0].artistName,
       albumName: musicsList[0].collectionName,
       checkboxActive,
+    });
+    this.getFavorites();
+  }
+
+  async getFavorites() {
+    const { musicsList, checkboxActive } = this.state;
+    const thisCheckboxActive = [...checkboxActive];
+    this.setState({ loading: true });
+    const favorites = await getFavoriteSongs();
+    this.setState({ loading: false });
+    musicsList.forEach(({ trackId }, index) => {
+      const iD = trackId;
+      if (favorites.some((track) => (track.trackId === iD))) {
+        thisCheckboxActive[index] = true;
+      }
+    });
+    this.setState({
+      checkboxActive: thisCheckboxActive,
     });
   }
 
