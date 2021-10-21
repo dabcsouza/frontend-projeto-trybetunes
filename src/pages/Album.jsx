@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from './Loading';
-import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 export default class Album extends Component {
   constructor(props) {
@@ -33,10 +33,13 @@ export default class Album extends Component {
   }
 
   handleCheckbox(index, value) {
-    const { checkboxActive } = this.state;
+    const { checkboxActive, musicsList } = this.state;
     const changeList = [...checkboxActive];
     changeList[index] = value;
     this.setState({ checkboxActive: changeList });
+    if (!value) {
+      removeSong(musicsList[index]);
+    }
   }
 
   async getMusicsList() {
