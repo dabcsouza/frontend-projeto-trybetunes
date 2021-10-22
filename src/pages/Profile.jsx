@@ -25,7 +25,6 @@ export default class Profile extends Component {
       loading: false,
       profile,
     });
-    console.log(profile);
   }
 
   render() {
@@ -46,7 +45,10 @@ export default class Profile extends Component {
                 alt={ `Foto do perfil do usuário ${name}` }
               />
               <p className="profile-description">{description}</p>
-              <Link to="/profile/edit">
+              <Link
+                to="/profile/edit"
+                className="profile-link"
+              >
                 <div className="button-profile btn-success">
                   Editar perfil
                 </div>

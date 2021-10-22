@@ -179,10 +179,22 @@ code {
   margin: auto;
 }
 
+.profile-link, .button-profile {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .button-profile {
   text-align: center;
   width: 150px;
   height: 40px;
+  border-radius: 5px;
 }
 
-
+.form-edit-profile {
+  display: flex;
+  max-width: 30%;
+  margin: 20px
+}
