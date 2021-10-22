@@ -49,7 +49,7 @@ export default class Profile extends Component {
                 to="/profile/edit"
                 className="profile-link"
               >
-                <div className="button-profile btn-success">
+                <div className="button-profile btn-success mb-lg-4">
                   Editar perfil
                 </div>
               </Link>
