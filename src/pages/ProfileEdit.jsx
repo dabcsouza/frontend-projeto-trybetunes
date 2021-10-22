@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import Header from '../components/Header';
 import Loading from './Loading';
-import { getUser } from '../services/userAPI';
+import { getUser, updateUser } from '../services/userAPI';
 
 export default class ProfileEdit extends Component {
   constructor(props) {
@@ -12,9 +13,13 @@ export default class ProfileEdit extends Component {
       inputEmail: '',
       imgSrc: '',
       inputDescription: '',
+      buttonDisable: true,
+      redirect: false,
     };
     this.getProfile = this.getProfile.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.enableSubmitButton = this.enableSubmitButton.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +29,25 @@ export default class ProfileEdit extends Component {
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
+    }, () => {
+      this.enableSubmitButton();
+    });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const { inputName, inputEmail, imgSrc, inputDescription } = this.state;
+    this.setState({
+      loading: true,
+    });
+    await updateUser({
+      name: inputName,
+      email: inputEmail,
+      image: imgSrc,
+      description: inputDescription,
+    });
+    this.setState({
+      redirect: true,
     });
   }
 
@@ -40,8 +64,23 @@ export default class ProfileEdit extends Component {
     });
   }
 
+  enableSubmitButton() {
+    const { inputName, inputEmail, imgSrc, inputDescription } = this.state;
+    const inputs = [inputName, inputEmail, imgSrc, inputDescription];
+    if (!inputs.some((input) => input.length === 0)) {
+      this.setState({
+        buttonDisable: false,
+      });
+    } else {
+      this.setState({
+        buttonDisable: true,
+      });
+    }
+  }
+
   render() {
-    const { loading, inputName, inputEmail, imgSrc, inputDescription } = this.state;
+    const { loading, inputName, inputEmail,
+      imgSrc, inputDescription, buttonDisable, redirect } = this.state;
     return (
       <div data-testid="page-profile-edit">
         <Header />
@@ -91,7 +130,7 @@ export default class ProfileEdit extends Component {
                   />
                 </label>
                 <label className="form-group mt-lg-4" htmlFor="edit-input-description">
-                  Imagem:
+                  Descrição:
                   <textarea
                     type="text"
                     rows="5"
@@ -105,9 +144,11 @@ export default class ProfileEdit extends Component {
                     required
                   />
                   <button
+                    disabled={ buttonDisable }
                     data-testid="edit-button-save"
                     type="submit"
                     className="btn btn-success"
+                    onClick={ this.handleSubmit }
                   >
                     Salvar
                   </button>
@@ -115,6 +156,9 @@ export default class ProfileEdit extends Component {
               </form>
             </section>
           )
+        }
+        {
+          redirect && <Redirect to="/profile" />
         }
       </div>
     );
