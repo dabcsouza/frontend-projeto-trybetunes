@@ -206,6 +206,14 @@ code {
   justify-content: space-around;
 }
 
+.header {
+  background-color: #023031 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 #edit-input-description {
   margin-bottom: 15px;
 }

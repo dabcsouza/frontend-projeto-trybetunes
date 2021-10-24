@@ -42,12 +42,13 @@ export default class Header extends Component {
     return (
       <header
         data-testid="header-component"
-        className="card-header headercell"
+        className="card-header header"
       >
         <section
           data-testid="header-user-name"
           className="user-header"
         >
+        <img src=''
           {
             showLoading ? <Loading /> : this.renderName(name)
           }

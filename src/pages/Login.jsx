@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { FileEarmarkPerson, ArrowRightCircle } from 'react-bootstrap-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Redirect } from 'react-router';
 import { createUser } from '../services/userAPI';
 import Loading from './Loading';
@@ -48,8 +49,8 @@ export default class Login extends Component {
         <form className="login-form">
           <label className="form-group" htmlFor="login-name-input">
             <div className="background-icon">
-              <FileEarmarkPerson
-                size={ 30 }
+              <FontAwesomeIcon
+                icon={ faUser }
                 className="input-person"
               />
             </div>
@@ -71,8 +72,9 @@ export default class Login extends Component {
               className="btn btn-success"
               onClick={ this.handleSubmit }
             >
-              <ArrowRightCircle />
+              <FontAwesomeIcon icon={ faChevronRight } />
               Entrar
+              <FontAwesomeIcon icon={ faChevronLeft } />
             </button>
           </div>
         </form>

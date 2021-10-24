@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Google } from 'react-bootstrap-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Loading from './Loading';
@@ -20,11 +21,13 @@ export default class Search extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onSearchButtonChange = this.onSearchButtonChange.bind(this);
     this.renderSearchField = this.renderSearchField.bind(this);
+    this.onKeyPressEnter = this.onKeyPressEnter.bind(this);
   }
 
   onInputChange({ target: { value } }) {
     const minLenSearch = 2;
     const searchResult = value.substring(0);
+    console.log(searchResult);
     this.setState({
       inputValue: value,
       searchResult,
@@ -57,6 +60,10 @@ export default class Search extends Component {
     });
   }
 
+  onKeyPressEnter(e) {
+    if (e.key === 'Enter') this.onSearchButtonChange();
+  }
+
   renderSearchField() {
     const { inputValue, searchDisable } = this.state;
     return (
@@ -69,7 +76,7 @@ export default class Search extends Component {
             data-testid="search-artist-button"
             onClick={ this.onSearchButtonChange }
           >
-            <Google />
+            <FontAwesomeIcon icon={ faSearch } />
           </button>
           <label
             htmlFor="search-artist"
@@ -81,6 +88,7 @@ export default class Search extends Component {
               name="search-artist"
               id="search-artist"
               onChange={ this.onInputChange }
+              onKeyPress={ this.onKeyPressEnter }
               value={ inputValue }
             />
           </label>
