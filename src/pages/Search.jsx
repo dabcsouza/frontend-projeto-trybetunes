@@ -27,7 +27,6 @@ export default class Search extends Component {
   onInputChange({ target: { value } }) {
     const minLenSearch = 2;
     const searchResult = value.substring(0);
-    console.log(searchResult);
     this.setState({
       inputValue: value,
       searchResult,
